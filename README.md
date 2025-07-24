@@ -5,7 +5,9 @@
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![Splunk](https://img.shields.io/badge/Splunk-8.0%2B-orange)](https://www.splunk.com/)
 
-A modern Python tool for deploying Splunk apps with interactive guidance, cross-platform support, and comprehensive validation.
+A modern Python tool for **local development and testing** of Splunk apps with interactive guidance, cross-platform support, and comprehensive validation.
+
+> ⚠️ **Development Tool**: This tool is designed for local app development and testing environments. For production deployments, we recommend implementing proper CI/CD pipelines with automated testing, code review, and deployment approval processes.
 
 ## 🌟 Features
 
@@ -69,28 +71,49 @@ python3 splunk_app_deployer.py --splunk-home /opt/splunk --restart
 
 ## 🎯 Use Cases
 
-### Development Workflow
+### 🔧 **Local Development & Testing** (Primary Use Case)
+
+This tool is designed for **local development environments** where developers are:
+- Building and testing Splunk apps locally
+- Iterating on app configurations and dashboards
+- Validating app structure and functionality
+- Learning Splunk app development concepts
+
 ```bash
-# Deploy multiple apps, restart once at the end
+# Development workflow - multiple apps, restart once at the end
 python3 splunk_app_deployer.py  # App 1, choose 'n' for restart
 python3 splunk_app_deployer.py  # App 2, choose 'n' for restart
 python3 splunk_app_deployer.py  # App 3, choose 'y' for restart
 ```
 
-### Production Deployment
+### 🧪 **Testing & Validation**
+
+Suitable for controlled testing environments:
+- Development Splunk instances
+- Testing new app versions before production
+- Validating app compatibility and functionality
+
 ```bash
-# Single app with automatic restart
-python3 splunk_app_deployer.py --splunk-home /opt/splunk --restart
+# Testing deployment with validation
+python3 splunk_app_deployer.py --splunk-home /opt/splunk-dev --restart
 ```
 
-### CI/CD Integration
-```bash
-# Fully automated deployment
-python3 splunk_app_deployer.py \
-  --splunk-home "/opt/splunk" \
-  --restart
-```
+### ⚠️ **Production Deployments** (Not Recommended)
 
+While this tool *can* be used for production, we **strongly recommend** implementing proper CI/CD pipelines for production deployments that include:
+
+- **Automated Testing**: Unit tests, integration tests, and validation checks
+- **Code Review**: Peer review and approval processes
+- **Deployment Approval**: Manual approval gates for production changes
+- **Rollback Capabilities**: Automated rollback on deployment failures
+- **Monitoring & Alerting**: Deployment success/failure monitoring
+- **Audit Logging**: Complete deployment audit trails
+
+**Recommended Production Tools:**
+- **GitLab CI/CD** or **GitHub Actions** for automation
+- **Splunk REST API** for programmatic deployments
+- **Ansible** or **Terraform** for infrastructure-as-code
+- **Splunk Deployment Server** for large-scale app distribution
 ## 🖥️ Platform Support
 
 | Platform | Status | Default Splunk Path | Notes |

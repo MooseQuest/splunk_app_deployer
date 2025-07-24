@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned
+
+### Added
+- Development vs production usage clarification in documentation
+- Warning about production deployment recommendations
+- Enhanced use cases section with CI/CD guidance
 - Unit testing framework
 - Docker container support
 - Search head cluster deployment
