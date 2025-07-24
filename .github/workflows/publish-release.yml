@@ -1,0 +1,231 @@
+name: Publish Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      custom_version:
+        description: 'Custom version (optional, overrides version_type)'
+        required: false
+        type: string
+      release_notes:
+        description: 'Release notes (optional)'
+        required: false
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Get current date
+      id: date
+      run: echo "date=$(date +'%B %d, %Y')" >> $GITHUB_OUTPUT
+
+    - name: Get latest tag
+      id: latest_tag
+      run: |
+        # Get the latest tag, or default to v1.1.0 if no tags exist
+        LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.1.0")
+        echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+        echo "Latest tag: $LATEST_TAG"
+
+    - name: Calculate new version
+      id: new_version
+      run: |
+        LATEST_TAG="${{ steps.latest_tag.outputs.latest_tag }}"
+        
+        # Remove 'v' prefix for version calculation
+        CURRENT_VERSION=${LATEST_TAG#v}
+        
+        if [ -n "${{ github.event.inputs.custom_version }}" ]; then
+          # Use custom version if provided
+          NEW_VERSION="${{ github.event.inputs.custom_version }}"
+          echo "Using custom version: $NEW_VERSION"
+        else
+          # Parse current version
+          IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+          MAJOR=${VERSION_PARTS[0]}
+          MINOR=${VERSION_PARTS[1]}
+          PATCH=${VERSION_PARTS[2]}
+          
+          # Increment based on version type
+          case "${{ github.event.inputs.version_type }}" in
+            "major")
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            "minor")
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            "patch")
+              PATCH=$((PATCH + 1))
+              ;;
+          esac
+          
+          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+          echo "Calculated new version: $NEW_VERSION"
+        fi
+        
+        NEW_TAG="v$NEW_VERSION"
+        echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+        echo "new_tag=$NEW_TAG" >> $GITHUB_OUTPUT
+
+    - name: Update SECURITY.md version
+      run: |
+        NEW_VERSION="${{ steps.new_version.outputs.new_version }}"
+        CURRENT_DATE="${{ steps.date.outputs.date }}"
+        
+        # Update version in SECURITY.md
+        sed -i "s/\*\*Version\*\*: .*/\*\*Version\*\*: $NEW_VERSION/" SECURITY.md
+        sed -i "s/\*\*Last Updated\*\*: .*/\*\*Last Updated\*\*: $CURRENT_DATE/" SECURITY.md
+        
+        echo "Updated SECURITY.md with version $NEW_VERSION"
+
+    - name: Update CHANGELOG.md
+      run: |
+        NEW_VERSION="${{ steps.new_version.outputs.new_version }}"
+        CURRENT_DATE="${{ steps.date.outputs.date }}"
+        RELEASE_NOTES="${{ github.event.inputs.release_notes }}"
+        
+        # Create temporary file with new changelog entry
+        cat > /tmp/new_changelog.md << INNER_EOF
+        # Changelog
+        
+        All notable changes to Splunk App Deployer will be documented in this file.
+        
+        The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+        and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+        
+        ## [Unreleased]
+        
+        ### Planned
+        
+        ## [$NEW_VERSION] - $CURRENT_DATE
+        
+        ### Release Notes
+        INNER_EOF
+        
+        if [ -n "$RELEASE_NOTES" ]; then
+          echo "$RELEASE_NOTES" >> /tmp/new_changelog.md
+        else
+          echo "- Automated release from main branch" >> /tmp/new_changelog.md
+          echo "- See commit history for detailed changes" >> /tmp/new_changelog.md
+        fi
+        
+        echo "" >> /tmp/new_changelog.md
+        
+        # Add existing changelog content (skip header and unreleased section)
+        tail -n +12 CHANGELOG.md >> /tmp/new_changelog.md
+        
+        # Replace original file
+        mv /tmp/new_changelog.md CHANGELOG.md
+        
+        echo "Updated CHANGELOG.md with version $NEW_VERSION"
+
+    - name: Commit version updates
+      run: |
+        NEW_VERSION="${{ steps.new_version.outputs.new_version }}"
+        
+        git add SECURITY.md CHANGELOG.md
+        git commit -m "Release v$NEW_VERSION - Automated Release
+        
+        - Update version information to $NEW_VERSION
+        - Add changelog entry for release
+        - Automated release from GitHub Actions"
+
+    - name: Create and push tag
+      run: |
+        NEW_TAG="${{ steps.new_version.outputs.new_tag }}"
+        NEW_VERSION="${{ steps.new_version.outputs.new_version }}"
+        CURRENT_DATE="${{ steps.date.outputs.date }}"
+        RELEASE_NOTES="${{ github.event.inputs.release_notes }}"
+        
+        # Create annotated tag with release notes
+        TAG_MESSAGE="Release $NEW_TAG - $CURRENT_DATE
+
+        This release includes:
+        "
+        
+        if [ -n "$RELEASE_NOTES" ]; then
+          TAG_MESSAGE="$TAG_MESSAGE
+        $RELEASE_NOTES
+        "
+        else
+          TAG_MESSAGE="$TAG_MESSAGE
+        - Automated release from main branch
+        - See commit history for detailed changes
+        "
+        fi
+        
+        TAG_MESSAGE="$TAG_MESSAGE
+
+        Full changelog available in CHANGELOG.md"
+        
+        git tag -a "$NEW_TAG" -m "$TAG_MESSAGE"
+        
+        # Push commits and tags
+        git push origin main
+        git push origin "$NEW_TAG"
+
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.new_version.outputs.new_tag }}
+        release_name: Splunk App Deployer ${{ steps.new_version.outputs.new_tag }}
+        body: |
+          ## What's New in ${{ steps.new_version.outputs.new_tag }}
+          
+          ${{ github.event.inputs.release_notes }}
+          
+          ## 📖 Documentation
+          
+          - **[User Guide](docs/USER_GUIDE.md)** - Complete usage guide with examples and workflows
+          - **[Developer Guide](docs/DEVELOPER_GUIDE.md)** - Technical guide for extending and customizing the tool
+          - **[Troubleshooting](docs/TROUBLESHOOTING.md)** - Comprehensive troubleshooting guide for common issues
+          - **[Installation Guide](docs/INSTALLATION.md)** - Detailed setup instructions for all platforms
+          
+          ## 🚀 Quick Start
+          
+          ```bash
+          # Clone the repository
+          git clone https://github.com/MooseQuest/splunk_app_deployer.git
+          cd splunk_app_deployer
+          
+          # Run interactive deployment
+          python3 splunk_app_deployer.py
+          ```
+          
+          ## 📞 Support
+          
+          - **General Questions**: [opensource-kris@moosequest.net](mailto:opensource-kris@moosequest.net)
+          - **Security Issues**: [security@moosequest.net](mailto:security@moosequest.net)
+          - **GitHub Issues**: [Report bugs or request features](https://github.com/MooseQuest/splunk_app_deployer/issues)
+        draft: false
+        prerelease: false

@@ -1,0 +1,170 @@
+name: Auto Release
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - '.gitignore'
+      - 'SECURITY.md'
+      - 'CHANGELOG.md'
+
+jobs:
+  auto-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Check if release needed
+      id: check_release
+      run: |
+        # Check if this commit already has a tag
+        CURRENT_COMMIT=$(git rev-parse HEAD)
+        TAGGED_COMMIT=$(git rev-list --tags --max-count=1 2>/dev/null || echo "")
+        
+        if [ "$CURRENT_COMMIT" = "$TAGGED_COMMIT" ]; then
+          echo "Current commit already tagged, skipping release"
+          echo "skip_release=true" >> $GITHUB_OUTPUT
+        else
+          echo "New commits found, proceeding with release"
+          echo "skip_release=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Configure Git
+      if: steps.check_release.outputs.skip_release == 'false'
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Get current date
+      if: steps.check_release.outputs.skip_release == 'false'
+      id: date
+      run: echo "date=$(date +'%B %d, %Y')" >> $GITHUB_OUTPUT
+
+    - name: Calculate new version
+      if: steps.check_release.outputs.skip_release == 'false'
+      id: version
+      run: |
+        # Get the latest tag, or default to v1.1.0 if no tags exist
+        LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.1.0")
+        echo "Latest tag: $LATEST_TAG"
+        
+        # Remove 'v' prefix and increment patch version
+        CURRENT_VERSION=${LATEST_TAG#v}
+        IFS='.' read -r -a VERSION_PARTS <<< "$CURRENT_VERSION"
+        MAJOR=${VERSION_PARTS[0]}
+        MINOR=${VERSION_PARTS[1]}
+        PATCH=${VERSION_PARTS[2]}
+        
+        # Auto-increment patch version
+        PATCH=$((PATCH + 1))
+        NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+        NEW_TAG="v$NEW_VERSION"
+        
+        echo "New version: $NEW_VERSION"
+        echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+        echo "new_tag=$NEW_TAG" >> $GITHUB_OUTPUT
+
+    - name: Update version files
+      if: steps.check_release.outputs.skip_release == 'false'
+      run: |
+        NEW_VERSION="${{ steps.version.outputs.new_version }}"
+        CURRENT_DATE="${{ steps.date.outputs.date }}"
+        
+        # Update SECURITY.md
+        sed -i "s/\*\*Version\*\*: .*/\*\*Version\*\*: $NEW_VERSION/" SECURITY.md
+        sed -i "s/\*\*Last Updated\*\*: .*/\*\*Last Updated\*\*: $CURRENT_DATE/" SECURITY.md
+        
+        # Update CHANGELOG.md with auto-release entry
+        cat > /tmp/new_changelog.md << INNER_EOF
+        # Changelog
+        
+        All notable changes to Splunk App Deployer will be documented in this file.
+        
+        The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+        and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+        
+        ## [Unreleased]
+        
+        ### Planned
+        
+        ## [$NEW_VERSION] - $CURRENT_DATE
+        
+        ### Changed
+        - Automated patch release from main branch
+        - See commit history for detailed changes since last release
+        
+        INNER_EOF
+        
+        # Add existing changelog content (skip header and unreleased section)
+        tail -n +12 CHANGELOG.md >> /tmp/new_changelog.md
+        mv /tmp/new_changelog.md CHANGELOG.md
+
+    - name: Commit and tag
+      if: steps.check_release.outputs.skip_release == 'false'
+      run: |
+        NEW_TAG="${{ steps.version.outputs.new_tag }}"
+        NEW_VERSION="${{ steps.version.outputs.new_version }}"
+        CURRENT_DATE="${{ steps.date.outputs.date }}"
+        
+        # Commit version updates
+        git add SECURITY.md CHANGELOG.md
+        git commit -m "Auto-release $NEW_TAG
+        
+        - Automated patch version bump to $NEW_VERSION
+        - Updated version information and changelog"
+        
+        # Create tag
+        git tag -a "$NEW_TAG" -m "Auto-release $NEW_TAG - $CURRENT_DATE
+
+        Automated patch release from main branch.
+        
+        Full changelog available in CHANGELOG.md"
+        
+        # Push changes
+        git push origin main
+        git push origin "$NEW_TAG"
+
+    - name: Create GitHub Release
+      if: steps.check_release.outputs.skip_release == 'false'
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.version.outputs.new_tag }}
+        release_name: Splunk App Deployer ${{ steps.version.outputs.new_tag }} (Auto-release)
+        body: |
+          ## 🤖 Automated Patch Release
+          
+          This is an automated patch release triggered by commits to the main branch.
+          
+          ### 📖 Documentation
+          
+          - **[User Guide](docs/USER_GUIDE.md)** - Complete usage guide
+          - **[Developer Guide](docs/DEVELOPER_GUIDE.md)** - Technical implementation guide  
+          - **[Troubleshooting](docs/TROUBLESHOOTING.md)** - Common issues and solutions
+          - **[Installation Guide](docs/INSTALLATION.md)** - Setup instructions
+          
+          ### 🚀 Quick Start
+          
+          ```bash
+          git clone https://github.com/MooseQuest/splunk_app_deployer.git
+          cd splunk_app_deployer
+          python3 splunk_app_deployer.py
+          ```
+          
+          ### 📞 Support
+          
+          - **General**: [opensource-kris@moosequest.net](mailto:opensource-kris@moosequest.net)
+          - **Security**: [security@moosequest.net](mailto:security@moosequest.net)
+          - **Issues**: [GitHub Issues](https://github.com/MooseQuest/splunk_app_deployer/issues)
+        draft: false
+        prerelease: false
