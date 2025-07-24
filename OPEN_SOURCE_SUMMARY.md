@@ -73,8 +73,8 @@ splunk_app_deployer/
 ### **Basic Usage**
 ```bash
 # Clone and run
-git clone https://github.com/yourusername/splunk-app-deployer.git
-cd splunk-app-deployer
+git clone https://github.com/MooseQuest/splunk_app_deployer.git
+cd splunk_app_deployer
 python3 splunk_app_deployer.py --help
 ```
 
@@ -155,7 +155,7 @@ git add .
 git commit -m "Initial release: Splunk App Deployer v1.0.0"
 
 # Add remote and push
-git remote add origin https://github.com/yourusername/splunk-app-deployer.git
+git remote add origin https://github.com/MooseQuest/splunk_app_deployer.git
 git branch -M main
 git push -u origin main
 

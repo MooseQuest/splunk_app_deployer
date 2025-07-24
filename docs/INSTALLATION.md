@@ -24,8 +24,8 @@ This guide will help you install and set up Splunk App Deployer on your system.
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/splunk-app-deployer.git
-cd splunk-app-deployer
+git clone https://github.com/MooseQuest/splunk_app_deployer.git
+cd splunk_app_deployer
 
 # Make executable
 chmod +x splunk_app_deployer.py
@@ -38,7 +38,7 @@ python3 splunk_app_deployer.py --help
 
 ```bash
 # Download the script directly
-curl -O https://raw.githubusercontent.com/yourusername/splunk-app-deployer/main/splunk_app_deployer.py
+curl -O https://raw.githubusercontent.com/MooseQuest/splunk_app_deployer/main/splunk_app_deployer.py
 
 # Make executable
 chmod +x splunk_app_deployer.py
@@ -49,7 +49,7 @@ python3 splunk_app_deployer.py --help
 
 ### Method 3: Manual Download
 
-1. Visit the [GitHub repository](https://github.com/yourusername/splunk-app-deployer)
+1. Visit the [GitHub repository](https://github.com/MooseQuest/splunk_app_deployer)
 2. Download the `splunk_app_deployer.py` file
 3. Place it in your desired directory
 4. Make it executable: `chmod +x splunk_app_deployer.py`
@@ -68,8 +68,8 @@ sudo apt install python3 python3-pip
 python3 --version
 
 # Install Splunk App Deployer
-git clone https://github.com/yourusername/splunk-app-deployer.git
-cd splunk-app-deployer
+git clone https://github.com/MooseQuest/splunk_app_deployer.git
+cd splunk_app_deployer
 chmod +x splunk_app_deployer.py
 ```
 
@@ -84,8 +84,8 @@ sudo dnf install python3 python3-pip  # CentOS 8+/Fedora
 python3 --version
 
 # Install Splunk App Deployer
-git clone https://github.com/yourusername/splunk-app-deployer.git
-cd splunk-app-deployer
+git clone https://github.com/MooseQuest/splunk_app_deployer.git
+cd splunk_app_deployer
 chmod +x splunk_app_deployer.py
 ```
 
@@ -100,8 +100,8 @@ brew install python3
 python3 --version
 
 # Install Splunk App Deployer
-git clone https://github.com/yourusername/splunk-app-deployer.git
-cd splunk-app-deployer
+git clone https://github.com/MooseQuest/splunk_app_deployer.git
+cd splunk_app_deployer
 chmod +x splunk_app_deployer.py
 ```
 
@@ -112,8 +112,8 @@ python3 --version
 
 # If Python 3 is not available, install from python.org
 # Then proceed with installation
-git clone https://github.com/yourusername/splunk-app-deployer.git
-cd splunk-app-deployer
+git clone https://github.com/MooseQuest/splunk_app_deployer.git
+cd splunk_app_deployer
 chmod +x splunk_app_deployer.py
 ```
 
@@ -125,8 +125,8 @@ chmod +x splunk_app_deployer.py
 # Download from: https://git-scm.com/download/win
 
 # In Git Bash terminal:
-git clone https://github.com/yourusername/splunk-app-deployer.git
-cd splunk-app-deployer
+git clone https://github.com/MooseQuest/splunk_app_deployer.git
+cd splunk_app_deployer
 
 # Test (no chmod needed on Windows)
 python splunk_app_deployer.py --help
@@ -138,8 +138,8 @@ python splunk_app_deployer.py --help
 python --version
 
 # Clone repository
-git clone https://github.com/yourusername/splunk-app-deployer.git
-cd splunk-app-deployer
+git clone https://github.com/MooseQuest/splunk_app_deployer.git
+cd splunk_app_deployer
 
 # Test installation
 python splunk_app_deployer.py --help
@@ -150,8 +150,8 @@ python splunk_app_deployer.py --help
 # In WSL terminal, follow Linux instructions
 sudo apt update
 sudo apt install python3 git
-git clone https://github.com/yourusername/splunk-app-deployer.git
-cd splunk-app-deployer
+git clone https://github.com/MooseQuest/splunk_app_deployer.git
+cd splunk_app_deployer
 chmod +x splunk_app_deployer.py
 ```
 
@@ -315,13 +315,13 @@ After successful installation:
 1. **Read the [User Guide](USER_GUIDE.md)** for usage instructions
 2. **Check [Troubleshooting](TROUBLESHOOTING.md)** for common issues
 3. **Review [Examples](../examples/)** for typical workflows
-4. **Join [GitHub Discussions](https://github.com/yourusername/splunk-app-deployer/discussions)** for community support
+4. **Join [GitHub Discussions](https://github.com/MooseQuest/splunk_app_deployer/discussions)** for community support
 
 ## 📦 Package Managers (Future)
 
 We're considering support for:
-- **pip**: `pip install splunk-app-deployer`
-- **homebrew**: `brew install splunk-app-deployer`
-- **apt**: `apt install splunk-app-deployer`
+- **pip**: `pip install splunk_app_deployer`
+- **homebrew**: `brew install splunk_app_deployer`
+- **apt**: `apt install splunk_app_deployer`
 
 Follow the repository for updates on package distribution! 

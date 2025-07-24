@@ -9,7 +9,7 @@ The security of Splunk App Deployer is important to us. If you believe you have 
 **🚨 Please DO NOT report security vulnerabilities through public GitHub issues.**
 
 Instead, please report security vulnerabilities by emailing:
-- **Email**: [kris@moosequest.net](mailto:kris@moosequest.net)
+- **Email**: [security@moosequest.net](mailto:security@moosequest.net)
 - **Subject**: `[SECURITY] Splunk App Deployer - [Brief Description]`
 
 ### **What to Include**
@@ -154,7 +154,7 @@ We maintain a security hall of fame for researchers who responsibly disclose vul
 ## 📞 **Contact Information**
 
 - **Primary Contact**: Kristerpher Henderson
-- **Email**: [kris@moosequest.net](mailto:kris@moosequest.net)
+- **Email**: [security@moosequest.net](mailto:security@moosequest.net)
 - **GitHub**: [@MooseQuest](https://github.com/MooseQuest)
 - **Response Time**: Within 48 hours
 

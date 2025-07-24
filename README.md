@@ -1,7 +1,7 @@
 # Splunk App Deployer
 
 [![Python](https://img.shields.io/badge/Python-3.6%2B-blue)](https://www.python.org/)
-[![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey)](https://github.com/yourusername/splunk-app-deployer)
+[![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey)](https://github.com/MooseQuest/splunk_app_deployer)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![Splunk](https://img.shields.io/badge/Splunk-8.0%2B-orange)](https://www.splunk.com/)
 
@@ -34,8 +34,8 @@ A modern Python tool for **local development and testing** of Splunk apps with i
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/splunk-app-deployer.git
-   cd splunk-app-deployer
+   git clone https://github.com/MooseQuest/splunk_app_deployer.git
+   cd splunk_app_deployer
    ```
 
 2. **Make the script executable:**
@@ -152,7 +152,7 @@ Examples:
 ## 🏗️ Project Structure
 
 ```
-splunk-app-deployer/
+splunk_app_deployer/
 ├── splunk_app_deployer.py     # Main deployment script
 ├── README.md                  # This file
 ├── LICENSE                    # MIT License
@@ -193,8 +193,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🆘 Support
 
 - **Documentation:** [docs/](docs/)
-- **Issues:** [GitHub Issues](https://github.com/yourusername/splunk-app-deployer/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/yourusername/splunk-app-deployer/discussions)
+- **Issues:** [GitHub Issues](https://github.com/MooseQuest/splunk_app_deployer/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/MooseQuest/splunk_app_deployer/discussions)
+- **General Contact:** [opensource-kris@moosequest.net](mailto:opensource-kris@moosequest.net)
 
 ## 🙏 Acknowledgments
 

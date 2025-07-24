@@ -19,11 +19,11 @@ We welcome contributions of all kinds:
 
 ```bash
 # Fork the repository on GitHub, then clone your fork
-git clone https://github.com/yourusername/splunk-app-deployer.git
-cd splunk-app-deployer
+git clone https://github.com/MooseQuest/splunk_app_deployer.git
+cd splunk_app_deployer
 
 # Add the original repository as upstream
-git remote add upstream https://github.com/original/splunk-app-deployer.git
+git remote add upstream https://github.com/original/splunk_app_deployer.git
 ```
 
 ### 2. Set Up Development Environment
@@ -264,5 +264,6 @@ Help us focus on these areas:
 - **GitHub Discussions** - For general questions and ideas
 - **GitHub Issues** - For bug reports and feature requests
 - **Pull Requests** - For code contributions
+- **General Contact** - [opensource-kris@moosequest.net](mailto:opensource-kris@moosequest.net)
 
 Thank you for contributing to Splunk App Deployer! 🙏 

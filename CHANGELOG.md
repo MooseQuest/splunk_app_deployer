@@ -162,5 +162,5 @@ We follow [Semantic Versioning](https://semver.org/):
 
 For questions about releases or version compatibility:
 - Check the [documentation](docs/)
-- Open an [issue](https://github.com/yourusername/splunk-app-deployer/issues)
-- Start a [discussion](https://github.com/yourusername/splunk-app-deployer/discussions) 
+- Open an [issue](https://github.com/MooseQuest/splunk_app_deployer/issues)
+- Start a [discussion](https://github.com/MooseQuest/splunk_app_deployer/discussions) 
