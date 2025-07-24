@@ -9,11 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
+## [1.1.0] - 2025-01-24
+
 ### Added
 - Development vs production usage clarification in documentation
 - Warning about production deployment recommendations
 - Enhanced use cases section with CI/CD guidance
-- Unit testing framework
+- Comprehensive security policy with responsible disclosure guidelines
+- Professional contact system with specialized emails
+- Security email (security@moosequest.net) for vulnerability reports
+- General contact email (opensource-kris@moosequest.net) for project inquiries
+
+### Changed
+- Repository URL consistency across all documentation
+- Use cases restructured to emphasize development-first design
+- Contact information separated by purpose (security vs general)
+- Enhanced positioning as local development tool
+
+### Fixed
+- All GitHub URLs now point to correct MooseQuest account
+- Repository naming consistency with underscores throughout
+- Installation instructions updated with correct references
 - Docker container support
 - Search head cluster deployment
 - Configuration validation enhancements
