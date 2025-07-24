@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 
+## [1.1.2] - July 24, 2025
+
+### Release Notes
+- Automated release from main branch
+- See commit history for detailed changes
+
 ## [1.1.1] - July 24, 2025
 
 ### Changed
