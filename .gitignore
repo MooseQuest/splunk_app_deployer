@@ -1,0 +1,88 @@
+# Splunk App Deployer - Git Ignore File
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Runtime files and logs
+logs/*.log
+logs/*.txt
+*.log
+
+# Backup files created by the script
+backups/*.tar.gz
+backups/*.zip
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Local configuration (if any)
+local.conf
+.env
+.env.local
+
+# Test files (future)
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Documentation builds (if using Sphinx)
+docs/_build/
+docs/build/
+
+# Splunk-specific (for testing)
+# Uncomment if you want to ignore test Splunk installations
+# splunk/
+# test_apps/
+
+# Keep empty directories
+!logs/.gitkeep
+!backups/.gitkeep 

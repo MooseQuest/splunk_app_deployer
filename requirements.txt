@@ -1,0 +1,26 @@
+# Splunk App Deployer - Python Dependencies
+#
+# This project is designed to use ONLY the Python standard library
+# to ensure maximum compatibility and minimal installation requirements.
+#
+# No external dependencies are required!
+#
+# Python version requirement: 3.6+
+#
+# The following standard library modules are used:
+# - os, sys, platform (system interaction)
+# - pathlib (cross-platform path handling)
+# - subprocess (external command execution)
+# - tarfile (backup compression)
+# - configparser (app.conf file handling)
+# - argparse (command-line argument parsing)
+# - datetime (timestamp generation)
+# - re (regular expressions)
+# - shutil (file operations)
+# - typing (type hints)
+#
+# If you want to run optional development tools:
+# flake8>=3.8.0  # Code linting (optional)
+# mypy>=0.910    # Type checking (optional)
+#
+# But these are NOT required for normal operation! 
