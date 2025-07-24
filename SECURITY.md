@@ -168,7 +168,7 @@ We maintain a security hall of fame for researchers who responsibly disclose vul
 
 ---
 
-**Last Updated**: January 2025  
-**Version**: 1.0.0
+**Last Updated**: July 24, 2025
+**Version**: 1.1.1
 
 Thank you for helping keep Splunk App Deployer secure! 🔒
