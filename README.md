@@ -63,11 +63,10 @@ python3 splunk_app_deployer.py --splunk-home /opt/splunk --restart
 
 ## 📖 Documentation
 
-- **[Installation Guide](docs/INSTALLATION.md)** - Detailed setup instructions
-- **[User Guide](docs/USER_GUIDE.md)** - Complete usage documentation
-- **[Developer Guide](docs/DEVELOPER_GUIDE.md)** - Contributing and customization
-- **[Troubleshooting](docs/TROUBLESHOOTING.md)** - Common issues and solutions
-- **[Architecture](docs/ARCHITECTURE.md)** - Technical design overview
+- **[Installation Guide](docs/INSTALLATION.md)** - Detailed setup instructions for all platforms
+- **[User Guide](docs/USER_GUIDE.md)** - Complete usage guide with examples and workflows
+- **[Developer Guide](docs/DEVELOPER_GUIDE.md)** - Technical guide for extending and customizing the tool
+- **[Troubleshooting](docs/TROUBLESHOOTING.md)** - Comprehensive troubleshooting guide for common issues
 
 ## 🎯 Use Cases
 
